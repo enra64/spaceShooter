@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\GameClasses\ProtoGameObject.cs" />
+    <Compile Include="Code\GameClasses\Ship.cs" />
     <Compile Include="Code\Gamestates\EndScreen.cs" />
     <Compile Include="Code\Gamestates\Game.cs" />
     <Compile Include="Code\Gamestates\SubMenu.cs" />
