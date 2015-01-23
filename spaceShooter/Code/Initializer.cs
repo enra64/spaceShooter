@@ -28,10 +28,11 @@ namespace spaceShooter {
             Controller.Window = new RenderWindow(new VideoMode(1366, 768), "Space shooter", Styles.Default);
             Controller.Window.SetVerticalSyncEnabled(true);
             Controller.Window.SetFramerateLimit(35);
-
-            //event handlers
             Controller.Window.Closed += delegate { Controller.Window.Close(); };
+            
+            //init view
             Controller.View = new View(new FloatRect(0, 0, Controller.Window.Size.X, Controller.Window.Size.Y));
+            Controller.Window.SetView(Controller.View);
         }
 
         private static void initializeMisc() {
@@ -41,6 +42,8 @@ namespace spaceShooter {
         private static void initializeAssets() {
             Globals.startMenuTextures.Add(new Texture("Assets/Menus/StartMenu/start.png"));
             Globals.startMenuTextures.Add(new Texture("Assets/Menus/StartMenu/end.png"));
+
+            Globals.shipTextures.Add(new Texture("Assets/Sprites/Ships/startship.png"));
         }
     }
 }

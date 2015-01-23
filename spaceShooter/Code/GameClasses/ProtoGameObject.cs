@@ -19,8 +19,14 @@ namespace spaceShooter.Code.GameClasses {
 
         public virtual void update(){}
 
-        public void draw(){
+        public virtual void draw(){
             Controller.Window.Draw(Sprite);
+        }
+
+        public Vector2f Center {
+            get {
+                return new Vector2f(Sprite.Position.X + Size.X / 2, Sprite.Position.Y + Size.Y / 2); 
+            }
         }
     }
 }
