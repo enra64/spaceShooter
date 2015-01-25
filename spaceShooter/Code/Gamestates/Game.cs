@@ -29,7 +29,6 @@ namespace spaceShooter.Code.Gamestates {
         internal override void update(){
             myShip.update();
             background.update();
-            Controller.View.Center = myShip.Center;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
                 Controller.View.Move(new Vector2f(-2, 0));

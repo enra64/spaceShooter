@@ -19,6 +19,8 @@ namespace spaceShooter.Code.GameClasses {
         }
 
         public override void draw() {
+            Controller.View.Center = Center;
+            Controller.Window.SetView(Controller.View);
             Controller.Window.Draw(Sprite);
         }
 
@@ -28,19 +30,19 @@ namespace spaceShooter.Code.GameClasses {
             //the ship will be sped up in that direction. later on, it should be possible to "drift".
             if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))
                 if (thrustLevel < 100)
-                    thrustLevel += 1;
+                    thrustLevel += 1f;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.LControl))
                 if (thrustLevel > 0)
-                    thrustLevel -= 1;
+                    thrustLevel -= 1f;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.X))
                 thrustLevel = 0;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.A))
-                orientation -= 2;
+                orientation -= 3;
             if (Keyboard.IsKeyPressed(Keyboard.Key.D))
-                orientation += 2;
+                orientation += 3;
 
             if (orientation > 359)
                 orientation -= 360;
@@ -64,7 +66,7 @@ namespace spaceShooter.Code.GameClasses {
             //calculate thrust angel
             thrustVector.Y = (float)Math.Sin(Math.PI * orientation / 180);
             thrustVector.X = (float)Math.Cos(Math.PI * orientation / 180);
-            Vector2f multipliedThrust = (thrustVector * thrustLevel) / 3f;
+            Vector2f multipliedThrust = (thrustVector * thrustLevel) / 2.5f;
 
             //add thrust to speed
             speedVector += multipliedThrust;
