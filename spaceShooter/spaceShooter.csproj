@@ -53,6 +53,7 @@
     <Compile Include="Code\GameClasses\Background.cs" />
     <Compile Include="Code\GameClasses\ProtoGameObject.cs" />
     <Compile Include="Code\GameClasses\Ship.cs" />
+    <Compile Include="Code\GameClasses\UserInterface.cs" />
     <Compile Include="Code\Gamestates\EndScreen.cs" />
     <Compile Include="Code\Gamestates\Game.cs" />
     <Compile Include="Code\Gamestates\SubMenu.cs" />
@@ -77,7 +78,9 @@
     <Content Include="Assets\Menus\StartMenu\start.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Sprites\background\flare.png" />
+    <Content Include="Assets\Sprites\background\flare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Sprites\Ships\startship.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
