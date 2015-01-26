@@ -14,6 +14,7 @@ namespace spaceShooter.Code.GameClasses {
         public ProtoGameObject(Vector2f _startPosition, Vector2f _size, Texture _texture) {
             Sprite = new Sprite(_texture);
             Sprite.Scale = new Vector2f((float)_size.X / (float)_texture.Size.X, (float)_size.Y / (float)_texture.Size.Y);
+            Size = _size;
             Sprite.Position = _startPosition;
         }
 
@@ -25,7 +26,7 @@ namespace spaceShooter.Code.GameClasses {
 
         public Vector2f Center {
             get {
-                return new Vector2f(Sprite.Position.X + Size.X / 2, Sprite.Position.Y + Size.Y / 2); 
+                return new Vector2f(Sprite.Position.X + Size.X / 2f, Sprite.Position.Y + Size.Y / 2f); 
             }
         }
     }

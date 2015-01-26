@@ -15,7 +15,7 @@ namespace spaceShooter.Code.GameClasses {
             : base(_startPosition, _size, _texture) {
             speedVector = new Vector2f();
             thrustVector = new Vector2f();
-            Sprite.Origin = this.Center;
+            Sprite.Origin = new Vector2f(100, 100); //this.Center;
         }
 
         public override void draw() {

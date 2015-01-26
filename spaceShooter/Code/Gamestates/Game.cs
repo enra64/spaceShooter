@@ -14,7 +14,7 @@ namespace spaceShooter.Code.Gamestates {
         public Ship myShip { get; set; }
         private Background background;
         public Game () {
-            myShip = new Ship(new Vector2f(100, 100), new Vector2f(100, 100), Globals.shipTextures[0]);
+            myShip = new Ship(new Vector2f(4000, 4000), new Vector2f(100, 100), Globals.shipTextures[0]);
             background = new Background();
         }
 
