@@ -53,21 +53,45 @@ namespace spaceShooter.Code.GameClasses {
             FloatRect calcPort= new FloatRect(calcView.Center.X - calcView.Size.X / 2, calcView.Center.Y - calcView.Size.Y / 2, calcView.Size.X, calcView.Size.Y);
             FloatRect overlap;
             //move the sprite if the view is moving off of it
-            if (!bgRects[4].Intersects(calcPort, out overlap)) {
-                for (int i = 0; i < bgRects.Length; i++) {
-                    if (bgRects[i].Intersects(overlap)) {
+            bgRects[4].Intersects(calcPort, out overlap);
 
+            for (int i = 0; i < bgRects.Length; i++) {
+                if (bgRects[i].Intersects(overlap)) {
+                    /*
+                     0 1 2    0 1 2    0 0 0
+                     3 4 5  %:0 1 2  /:1 1 1
+                     6 7 8    0 1 2    2 2 2
+                     */
+                    switch (i % 3){
+                        case 0:
+                            moveBackground(moveDirection.left);
+                            break;
+                        case 2:
+                            moveBackground(moveDirection.right);
+                            break;
+                    }
+                    switch (i / 3){
+                        case 0:
+                            moveBackground(moveDirection.top);
+                            break;
+                        case 2:
+                            moveBackground(moveDirection.bottom);
+                            break;
                     }
                 }
             }
+            
         }
 
-        private void moveBackground(moveDirection whichDirection)
+        private void moveBackground(moveDirection whichDirection) {
+            //recalculate bgrects, move all in one direction
+            foreach()
+        }
 
         //idea: draw onto a rendertexture, draw that behind everything
         //if we are moving right, draw new stars on the left and delete the old ones
         internal void draw() {
-            Controller.Window.Draw(bgSprite);
+            Controller.Window.Draw(bgSprites[4]);
         }
     }
 }
