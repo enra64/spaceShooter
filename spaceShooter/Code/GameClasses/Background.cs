@@ -11,6 +11,20 @@ namespace spaceShooter.Code.GameClasses {
         private RenderTexture bgRenderTexture = new RenderTexture(8192, 8192);
         private Sprite bgSprite;
 
+        Sprite[] bgSprites = new Sprite[9];
+        FloatRect[] bgRects = new FloatRect[9];
+        private enum moveDirection {
+            none,
+            topleft,
+            left,
+            bottomleft,
+            bottom,
+            bottomright,
+            right,
+            topright,
+            top
+        };
+
         public Background() {
             List<Sprite> starList = new List<Sprite>();
             Random r = new Random();
@@ -26,24 +40,29 @@ namespace spaceShooter.Code.GameClasses {
             bgRenderTexture.Clear();
             foreach (Sprite s in starList)
                 bgRenderTexture.Draw(s);
-            bgSprite = new Sprite(bgRenderTexture.Texture);
-            bgSprite.Position = new Vector2f(2, 3);
+            for (uint i = 0; i < bgSprites.Length; i++) {
+                bgSprites[i] = new Sprite(bgRenderTexture.Texture);
+                //set the sprite positions to a 3x3 grid
+                bgSprites[i].Position = new Vector2f((float) (i * textureSize.X - textureSize.X), (float) (i%3 * textureSize.Y - textureSize.Y));
+                bgRects[i] = bgSprites[i].GetGlobalBounds();
+            }
         }
 
         public void update(){
             View calcView = Controller.Window.GetView();
-            calcView.Viewport = new FloatRect(calcView.Center.X - calcView.Size.X / 2, calcView.Center.Y - calcView.Size.Y / 2, calcView.Size.X, calcView.Size.Y);
+            FloatRect calcPort= new FloatRect(calcView.Center.X - calcView.Size.X / 2, calcView.Center.Y - calcView.Size.Y / 2, calcView.Size.X, calcView.Size.Y);
+            FloatRect overlap;
             //move the sprite if the view is moving off of it
-            if (calcView.Viewport.Left + calcView.Viewport.Width > bgSprite.Position.X + bgRenderTexture.Texture.Size.X)
-                bgSprite.Position = new Vector2f(bgSprite.Position.X + bgRenderTexture.Texture.Size.X - calcView.Viewport.Width, bgSprite.Position.Y);
-            if (calcView.Viewport.Top + calcView.Viewport.Height > bgSprite.Position.Y + bgRenderTexture.Texture.Size.Y)
-                bgSprite.Position = new Vector2f(bgSprite.Position.X, bgSprite.Position.Y + bgRenderTexture.Texture.Size.Y - calcView.Viewport.Height);
+            if (!bgRects[4].Intersects(calcPort, out overlap)) {
+                for (int i = 0; i < bgRects.Length; i++) {
+                    if (bgRects[i].Intersects(overlap)) {
 
-            if (calcView.Viewport.Left < bgSprite.Position.X)
-                bgSprite.Position = new Vector2f(calcView.Viewport.Left - bgRenderTexture.Texture.Size.X, bgSprite.Position.Y);
-            if (calcView.Viewport.Top + calcView.Viewport.Height > bgSprite.Position.Y + bgRenderTexture.Texture.Size.Y)
-                bgSprite.Position = new Vector2f(bgSprite.Position.X, calcView.Viewport.Top - bgRenderTexture.Texture.Size.Y);
+                    }
+                }
+            }
         }
+
+        private void moveBackground(moveDirection whichDirection)
 
         //idea: draw onto a rendertexture, draw that behind everything
         //if we are moving right, draw new stars on the left and delete the old ones
