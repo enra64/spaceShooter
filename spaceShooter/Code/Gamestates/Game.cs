@@ -34,6 +34,15 @@ namespace spaceShooter.Code.Gamestates {
                 Controller.View.Zoom(1.02f);
             if (Keyboard.IsKeyPressed(Keyboard.Key.E))
                 Controller.View.Zoom(.98f);
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
+                background.moveBackground(Background.moveDirection.left);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
+                background.moveBackground(Background.moveDirection.right);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
+                background.moveBackground(Background.moveDirection.up);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
+                background.moveBackground(Background.moveDirection.down);
             
             Controller.Window.SetView(Controller.View);
         }

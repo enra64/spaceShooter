@@ -9,30 +9,28 @@ using System.Threading.Tasks;
 namespace spaceShooter.Code.GameClasses {
     class Background {
         private RenderTexture bgRenderTexture = new RenderTexture(4096, 4096);
-        private Sprite bgSprite;
 
         Sprite[] bgSprites = new Sprite[9];
         FloatRect[] bgRects = new FloatRect[9];
         Boolean[] bgDraw = new Boolean[9];
+        /// <summary>
+        /// right top left bottom
+        /// </summary>
+        Boolean[] bgMoved = new Boolean[4];
         RectangleShape[] testShapes = new RectangleShape[9];
-        Vector2u textureSize;
 
-        private enum moveDirection {
+        public enum moveDirection {
             none,
-            topleft,
             left,
-            bottomleft,
-            bottom,
-            bottomright,
+            down,
             right,
-            topright,
-            top
+            up
         };
 
         public Background() {
             List<Sprite> starList = new List<Sprite>();
             Random r = new Random();
-            textureSize = Globals.starTexture.Size;
+            Vector2u textureSize = Globals.starTexture.Size;
 
             for (int i = 0; i < 10000; i++) {
                 starList.Add(new Sprite(Globals.starTexture));
@@ -71,19 +69,48 @@ namespace spaceShooter.Code.GameClasses {
             //move the sprite if the view is moving off of it
             calcPort.Intersects(bgRects[4], out overlap);
             
-            Console.WriteLine(overlap);
+            //Console.WriteLine(overlap);
 
             //totally legit
-            if (overlap.Left <= 0)
-                moveBackground(moveDirection.left);
-            if (overlap.Left >= bgRenderTexture.Size.X - 100)
-                moveBackground(moveDirection.right);
+            if (overlap.Left <= 0) {
+                //if we just jumped right, do not move
+                if (bgMoved[0] == false && bgMoved[0] == false)
+                    moveBackground(moveDirection.left);
+                //except if full intersection with main tile is reached
+                else if (overlap.Width == Controller.Window.Size.X){
+                    moveBackground(moveDirection.left);
+                    bgMoved[0] = false;
+                }
+            }
+            calcPort.Intersects(bgRects[4], out overlap);
+            if (overlap.Left >= bgRenderTexture.Size.X - Controller.Window.Size.X) {
+                if (bgMoved[2] == false && bgMoved[2] == false)
+                    moveBackground(moveDirection.right);
+                else if (overlap.Width == Controller.Window.Size.X) {
+                    moveBackground(moveDirection.right);
+                    bgMoved[2] = false;
+                }
+            }
 
-            if (overlap.Top <= 0 && overlap.Height < Controller.Window.Size.Y)
-                moveBackground(moveDirection.top);
-            if (overlap.Top >= bgRenderTexture.Size.X - 100 && overlap.Height < Controller.Window.Size.Y)
-                moveBackground(moveDirection.bottom);
-            
+            calcPort.Intersects(bgRects[4], out overlap);
+            if (overlap.Top <= 0) {
+                if (bgMoved[3] == false && bgMoved[1] == false)
+                    moveBackground(moveDirection.up);
+                else if (overlap.Width == Controller.Window.Size.Y) {
+                    moveBackground(moveDirection.up);
+                    bgMoved[3] = false;
+                }
+            }
+            calcPort.Intersects(bgRects[4], out overlap);
+            if (overlap.Top >= bgRenderTexture.Size.Y - Controller.Window.Size.Y) {
+                if (bgMoved[1] == false && bgMoved[3] == false)
+                    moveBackground(moveDirection.down);
+                else if (overlap.Width == Controller.Window.Size.Y) {
+                    moveBackground(moveDirection.down);
+                    bgMoved[1] = false;
+                }
+            }
+            calcPort.Intersects(bgRects[4], out overlap);
 
             //draw only if it would actually be seen
             for (int i = 0; i < bgRects.Length; i++) {
@@ -94,21 +121,29 @@ namespace spaceShooter.Code.GameClasses {
             }
         }
 
-        private void moveBackground(moveDirection whichDirection) {
+        public void moveBackground(moveDirection whichDirection) {
             //recalculate bgrects, move all in one direction
             Vector2f change = new Vector2f();
             switch (whichDirection) {
                 case moveDirection.left:
-                    change.X -= textureSize.X;
+                    change.X -= bgRenderTexture.Size.X;
+                    bgMoved[2] = true;
+                    Console.WriteLine("left");
                     break;
                 case moveDirection.right:
-                    change.X += textureSize.X;
+                    change.X += bgRenderTexture.Size.X;
+                    bgMoved[0] = true;
+                    Console.WriteLine("right");
                     break;
-                case moveDirection.top:
-                    change.Y -= textureSize.Y;
+                case moveDirection.up:
+                    change.Y -= bgRenderTexture.Size.Y;
+                    bgMoved[1] = true;
+                    Console.WriteLine("top");
                     break;
-                case moveDirection.bottom:
-                    change.Y -= textureSize.Y;
+                case moveDirection.down:
+                    change.Y += bgRenderTexture.Size.Y;
+                    bgMoved[3] = true;
+                    Console.WriteLine("bottom");
                     break;
             }
             //move sprites
