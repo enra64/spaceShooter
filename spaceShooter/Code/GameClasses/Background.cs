@@ -65,35 +65,33 @@ namespace spaceShooter.Code.GameClasses {
         public void update() {
             View calcView = Controller.Window.GetView();
             FloatRect calcPort = new FloatRect(calcView.Center.X - 1366 /*calcView.Size.X*/ / 2, calcView.Center.Y - 768 /*calcView.Size.Y*/ / 2, 1366, 768);
-            FloatRect[] outOverlaps = new FloatRect[9];
+            FloatRect overlap;
 
             //move the sprite if the view is moving off of it
-            for (int i = 0; i < bgRects.Length; i++)
-                calcPort.Intersects(bgRects[i], out outOverlaps[i]);
+            calcPort.Intersects(bgRects[4], out overlap);
 
-            Console.WriteLine(outOverlaps[4]);
+            Console.WriteLine(overlap);
 
-            if (outOverlaps[4].Height == calcPort.Height) {
+            if (overlap.Height == calcPort.Height) {
                 bgMoved[1] = false;
                 bgMoved[3] = false;
             }
-
-            if (outOverlaps[4].Width == calcPort.Width) {
+            if (overlap.Width == calcPort.Width) {
                 bgMoved[0] = false;
                 bgMoved[2] = false;
             }
 
-            if (outOverlaps[4].Left <= bgRects[4].Left && !bgMoved[0])
+            if (overlap.Left <= bgRects[4].Left && !bgMoved[0])
                 moveBackground(moveDirection.left);
 
-            if (outOverlaps[4].Top <= bgRects[4].Top && !bgMoved[3])
+            if (overlap.Top <= bgRects[4].Top && !bgMoved[3])
                 moveBackground(moveDirection.up);
 
 
-            if (outOverlaps[4].Left + calcPort.Width > bgRects[4].Left + bgRects[4].Width && !bgMoved[2])
+            if (overlap.Left + calcPort.Width > bgRects[4].Left + bgRects[4].Width && !bgMoved[2])
                 moveBackground(moveDirection.right);
 
-            if (outOverlaps[4].Top + calcPort.Height > bgRects[4].Top + bgRects[4].Height && !bgMoved[1])
+            if (overlap.Top + calcPort.Height > bgRects[4].Top + bgRects[4].Height && !bgMoved[1])
                 moveBackground(moveDirection.down);
             
             
