@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace spaceShooter.Code.GameClasses {
     class Background {
-        private RenderTexture bgRenderTexture = new RenderTexture(4096, 4096);
+        private RenderTexture bgRenderTexture = new RenderTexture(6144, 6144);
 
         Sprite[] bgSprites = new Sprite[9];
         FloatRect[] bgRects = new FloatRect[9];
@@ -73,11 +73,14 @@ namespace spaceShooter.Code.GameClasses {
 
             Console.WriteLine(outOverlaps[4]);
 
-            if (outOverlaps[4].Width == calcPort.Width && outOverlaps[4].Height == calcPort.Height) {
-                bgMoved[0] = false;
+            if (outOverlaps[4].Height == calcPort.Height) {
                 bgMoved[1] = false;
-                bgMoved[2] = false;
                 bgMoved[3] = false;
+            }
+
+            if (outOverlaps[4].Width == calcPort.Width) {
+                bgMoved[0] = false;
+                bgMoved[2] = false;
             }
 
             if (outOverlaps[4].Left <= bgRects[4].Left && !bgMoved[0])
