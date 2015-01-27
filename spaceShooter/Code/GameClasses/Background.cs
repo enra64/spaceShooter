@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace spaceShooter.Code.GameClasses {
     class Background {
-        private RenderTexture bgRenderTexture = new RenderTexture(8192, 8192);
+        private RenderTexture bgRenderTexture = new RenderTexture(4096, 4096);
         private Sprite bgSprite;
 
         Sprite[] bgSprites = new Sprite[9];
         FloatRect[] bgRects = new FloatRect[9];
         Boolean[] bgDraw = new Boolean[9];
+        RectangleShape[] testShapes = new RectangleShape[9];
         Vector2u textureSize;
 
         private enum moveDirection {
@@ -38,7 +39,7 @@ namespace spaceShooter.Code.GameClasses {
                 float nextScale = (float)r.Next(10) / 15f;
                 starList[i].Scale = new Vector2f(nextScale, nextScale);
                 starList[i].Color = new Color((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255));
-                starList[i].Position = new Vector2f(r.Next(8000), r.Next(8000));
+                starList[i].Position = new Vector2f(r.Next((int)bgRenderTexture.Size.X), r.Next((int)bgRenderTexture.Size.Y));
             }
             bgRenderTexture.Clear();
             foreach (Sprite s in starList)
@@ -52,6 +53,14 @@ namespace spaceShooter.Code.GameClasses {
                 int y = (i / 3) - 1;
                 bgSprites[i].Position = new Vector2f(x * bgRenderTexture.Size.X, y * bgRenderTexture.Size.Y);
                 bgRects[i] = bgSprites[i].GetGlobalBounds();
+                testShapes[i] = new RectangleShape(new Vector2f(bgRects[i].Width, bgRects[i].Height));
+                testShapes[i].Position = new Vector2f(bgRects[i].Left, bgRects[i].Top);
+                if (x != 0 && y != 0)
+                    testShapes[i].FillColor = Color.Green;
+                if (x == 0 ^ y == 0)
+                    testShapes[i].FillColor = Color.White;
+                if (x == 0 && y == 0)
+                    testShapes[i].FillColor = Color.Green;
             }
         }
 
@@ -67,12 +76,12 @@ namespace spaceShooter.Code.GameClasses {
             //totally legit
             if (overlap.Left <= 0)
                 moveBackground(moveDirection.left);
-            if (overlap.Left >= 8185)
+            if (overlap.Left >= bgRenderTexture.Size.X - 100)
                 moveBackground(moveDirection.right);
 
             if (overlap.Top <= 0 && overlap.Height < Controller.Window.Size.Y)
                 moveBackground(moveDirection.top);
-            if (overlap.Top >= 8185 && overlap.Height < Controller.Window.Size.Y)
+            if (overlap.Top >= bgRenderTexture.Size.X - 100 && overlap.Height < Controller.Window.Size.Y)
                 moveBackground(moveDirection.bottom);
             
 
@@ -106,15 +115,14 @@ namespace spaceShooter.Code.GameClasses {
             for (int i = 0; i < bgSprites.Length; i++) {
                 bgSprites[i].Position += change;
                 bgRects[i] = bgSprites[i].GetGlobalBounds();
+                testShapes[i].Position += change;
             }
         }
 
-        //idea: draw onto a rendertexture, draw that behind everything
-        //if we are moving right, draw new stars on the left and delete the old ones
         internal void draw() {
             for (int i = 0; i < bgRects.Length; i++)
                 //if(bgDraw[i])
-                Controller.Window.Draw(bgSprites[i]);
+                Controller.Window.Draw(testShapes[i]);
         }
     }
 }

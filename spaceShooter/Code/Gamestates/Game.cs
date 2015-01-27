@@ -14,7 +14,7 @@ namespace spaceShooter.Code.Gamestates {
         public Ship myShip { get; set; }
         private Background background;
         public Game () {
-            myShip = new Ship(new Vector2f(4000, 4000), new Vector2f(100, 100), Globals.shipTextures[0]);
+            myShip = new Ship(new Vector2f(2000, 2000), new Vector2f(100, 100), Globals.shipTextures[0]);
             background = new Background();
         }
 
@@ -30,15 +30,11 @@ namespace spaceShooter.Code.Gamestates {
             myShip.update();
             background.update();
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
-                Controller.View.Move(new Vector2f(-2, 0));
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
-                Controller.View.Move(new Vector2f(2, 0));
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
-                Controller.View.Move(new Vector2f(0, -2));
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
-                Controller.View.Move(new Vector2f(0, 2));
-
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
+                Controller.View.Zoom(1.02f);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.E))
+                Controller.View.Zoom(.98f);
+            
             Controller.Window.SetView(Controller.View);
         }
     }
