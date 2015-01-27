@@ -36,7 +36,7 @@ namespace spaceShooter.Code.GameClasses {
                 starList.Add(new Sprite(Globals.starTexture));
                 float nextScale = (float)r.Next(10) / 15f;
                 starList[i].Scale = new Vector2f(nextScale, nextScale);
-                starList[i].Color = new Color((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255));
+                starList[i].Color = new Color((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(200));
                 starList[i].Position = new Vector2f(r.Next((int)bgRenderTexture.Size.X), r.Next((int)bgRenderTexture.Size.Y));
             }
             bgRenderTexture.Clear();
@@ -70,7 +70,7 @@ namespace spaceShooter.Code.GameClasses {
             //move the sprite if the view is moving off of it
             calcPort.Intersects(bgRects[4], out overlap);
 
-            Console.WriteLine(overlap);
+            //Console.WriteLine(overlap);
 
             if (overlap.Height == calcPort.Height) {
                 bgMoved[1] = false;
