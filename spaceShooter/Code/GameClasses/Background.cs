@@ -53,11 +53,9 @@ namespace spaceShooter.Code.GameClasses {
                 bgRects[i] = bgSprites[i].GetGlobalBounds();
                 testShapes[i] = new RectangleShape(new Vector2f(bgRects[i].Width, bgRects[i].Height));
                 testShapes[i].Position = new Vector2f(bgRects[i].Left, bgRects[i].Top);
-                if (x != 0 && y != 0)
-                    testShapes[i].FillColor = Color.Green;
                 if (x == 0 ^ y == 0)
                     testShapes[i].FillColor = Color.White;
-                if (x == 0 && y == 0)
+                else
                     testShapes[i].FillColor = Color.Green;
             }
         }
