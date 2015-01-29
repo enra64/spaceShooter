@@ -10,7 +10,7 @@ namespace spaceShooter.Code.GameClasses {
     class Ship : ProtoGameObject {
         private Vector2f speedVector, thrustVector;
         private float orientation = 0, thrustLevel = 0, xGravity = .2f, yGravity = .2f;
-        private Vector2f maximumSpeed = new Vector2f(40, 40);
+        private Vector2f maximumSpeed = new Vector2f(35, 35);
 
         public Ship(Vector2f _startPosition, Vector2f _size, Texture _texture)
             : base(_startPosition, _size, _texture) {
