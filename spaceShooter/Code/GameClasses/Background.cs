@@ -62,13 +62,10 @@ namespace spaceShooter.Code.GameClasses {
 
         public void update() {
             View calcView = Controller.Window.GetView();
-            FloatRect calcPort = new FloatRect(calcView.Center.X - 1366 /*calcView.Size.X*/ / 2, calcView.Center.Y - 768 /*calcView.Size.Y*/ / 2, 1366, 768);
-            FloatRect overlap;
+            FloatRect overlap, calcPort = new FloatRect(calcView.Center.X - 1366 /*calcView.Size.X*/ / 2, calcView.Center.Y - 768 /*calcView.Size.Y*/ / 2, 1366, 768);
 
             //move the sprite if the view is moving off of it
             calcPort.Intersects(bgRects[4], out overlap);
-
-            //Console.WriteLine(overlap);
 
             if (overlap.Height == calcPort.Height) {
                 bgMoved[1] = false;
@@ -91,15 +88,19 @@ namespace spaceShooter.Code.GameClasses {
 
             if (overlap.Top + calcPort.Height > bgRects[4].Top + bgRects[4].Height && !bgMoved[1])
                 moveBackground(moveDirection.down);
-            
-            
+
+            bool doRepos = true;
             //draw only if it would actually be seen
             for (int i = 0; i < bgRects.Length; i++) {
-                if (calcPort.Intersects(bgRects[i]))
+                if (calcPort.Intersects(bgRects[i])){
                     bgDraw[i] = true;
+                    doRepos = false;
+                }
                 else
                     bgDraw[i] = false;
             }
+            if (doRepos)
+                reposition(Gamestates.Game.);
         }
 
         public void moveBackground(moveDirection whichDirection) {
@@ -133,6 +134,10 @@ namespace spaceShooter.Code.GameClasses {
                 bgRects[i] = bgSprites[i].GetGlobalBounds();
                 testShapes[i].Position += change;
             }
+        }
+
+        private void reposition(Vector2f center) {
+
         }
 
         internal void draw() {

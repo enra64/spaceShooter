@@ -16,11 +16,11 @@ namespace spaceShooter.Code.GameClasses {
             : base(_startPosition, _size, _texture) {
             speedVector = new Vector2f();
             thrustVector = new Vector2f();
-            Sprite.Origin = new Vector2f(100, 100); //this.Center;
+            Sprite.Origin = new Vector2f((this.Center.X * 1f) - _startPosition.X, this.Center.Y - _startPosition.Y);
         }
 
-        public override void draw() {
-            Controller.View.Center = Center;
+        public override void draw(){
+            Controller.View.Center = Sprite.Position + 1 * Sprite.Origin;
             Controller.Window.SetView(Controller.View);
             Controller.Window.Draw(Sprite);
         }
@@ -34,22 +34,23 @@ namespace spaceShooter.Code.GameClasses {
                     thrustLevel += 1f;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.LControl))
-                if (thrustLevel > 0)
-                    thrustLevel -= 1f;
+                if (thrustLevel > 1)
+                    thrustLevel -= 2f;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.X))
                 thrustLevel = 0;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.A))
-                orientation -= 3;
+                orientation -= 4;
             if (Keyboard.IsKeyPressed(Keyboard.Key.D))
-                orientation += 3;
+                orientation += 4;
 
             if (orientation > 359)
                 orientation -= 360;
             if (orientation < 0)
                 orientation += 360;
 
+            Console.WriteLine(Sprite.Position + "  " + Sprite.Origin);
 
             Sprite.Rotation = orientation;
 
@@ -79,24 +80,6 @@ namespace spaceShooter.Code.GameClasses {
                 speedVector.Y = maximumSpeed.Y * Math.Sign(multipliedThrust.Y);
             else
                 speedVector.Y += multipliedThrust.Y;
-
-
-            //speedVector += multipliedThrust;
-
-            Console.Write(multipliedThrust + "  ");
-
-            //limit ship speed to thrust
-            //problem: speed in x is given >0; thrust is zero, gets increased, so speed > thrust -> speed = thrust
-            //resolution: if thrust is just being increased, do not do this
-            //sv: 20, tv: 0,01
-            /*
-            if (Math.Abs(speedVector.X) > Math.Abs(multipliedThrust.X) && multipliedThrust.X != 0)
-                speedVector.X = multipliedThrust.X;
-            if (Math.Abs(speedVector.Y) > Math.Abs(multipliedThrust.Y) && multipliedThrust.Y != 0)
-                speedVector.Y = multipliedThrust.Y;
-            */
-
-            Console.WriteLine(speedVector);
 
             if (Math.Abs(speedVector.X) < 0.15f)
                 speedVector.X = 0;
