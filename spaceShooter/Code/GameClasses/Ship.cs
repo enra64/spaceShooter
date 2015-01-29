@@ -10,6 +10,7 @@ namespace spaceShooter.Code.GameClasses {
     class Ship : ProtoGameObject {
         private Vector2f speedVector, thrustVector;
         private float orientation = 0, thrustLevel = 0, xGravity = .2f, yGravity = .2f;
+        private Vector2f maximumSpeed = new Vector2f(35, 35);
 
         public Ship(Vector2f _startPosition, Vector2f _size, Texture _texture)
             : base(_startPosition, _size, _texture) {
@@ -69,13 +70,33 @@ namespace spaceShooter.Code.GameClasses {
             Vector2f multipliedThrust = (thrustVector * thrustLevel) / 2.5f;
 
             //add thrust to speed
-            speedVector += multipliedThrust;
+            if (Math.Abs(speedVector.X + multipliedThrust.X) > maximumSpeed.X)
+                speedVector.X = maximumSpeed.X * Math.Sign(multipliedThrust.X);
+            else
+                speedVector.X += multipliedThrust.X;
+
+            if (Math.Abs(speedVector.Y + multipliedThrust.Y) > maximumSpeed.Y)
+                speedVector.Y = maximumSpeed.Y * Math.Sign(multipliedThrust.Y);
+            else
+                speedVector.Y += multipliedThrust.Y;
+
+
+            //speedVector += multipliedThrust;
+
+            Console.Write(multipliedThrust + "  ");
 
             //limit ship speed to thrust
+            //problem: speed in x is given >0; thrust is zero, gets increased, so speed > thrust -> speed = thrust
+            //resolution: if thrust is just being increased, do not do this
+            //sv: 20, tv: 0,01
+            /*
             if (Math.Abs(speedVector.X) > Math.Abs(multipliedThrust.X) && multipliedThrust.X != 0)
                 speedVector.X = multipliedThrust.X;
             if (Math.Abs(speedVector.Y) > Math.Abs(multipliedThrust.Y) && multipliedThrust.Y != 0)
                 speedVector.Y = multipliedThrust.Y;
+            */
+
+            Console.WriteLine(speedVector);
 
             if (Math.Abs(speedVector.X) < 0.15f)
                 speedVector.X = 0;
