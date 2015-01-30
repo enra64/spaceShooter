@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
+using spaceShooter.Code.Gamestates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace spaceShooter.Code.GameClasses {
     class Background {
         private RenderTexture bgRenderTexture = new RenderTexture(6144, 6144);
+        Game gameReference;
 
         Sprite[] bgSprites = new Sprite[9];
         FloatRect[] bgRects = new FloatRect[9];
@@ -27,10 +29,11 @@ namespace spaceShooter.Code.GameClasses {
             up
         };
 
-        public Background() {
+        public Background(Game _ref) {
             List<Sprite> starList = new List<Sprite>();
             Random r = new Random();
             Vector2u textureSize = Globals.starTexture.Size;
+            gameReference = _ref;
 
             for (int i = 0; i < 10000; i++) {
                 starList.Add(new Sprite(Globals.starTexture));
@@ -100,7 +103,7 @@ namespace spaceShooter.Code.GameClasses {
                     bgDraw[i] = false;
             }
             if (doRepos)
-                reposition(Gamestates.Game.);
+                reposition(gameReference.myShip.Center);
         }
 
         public void moveBackground(moveDirection whichDirection) {
@@ -136,8 +139,16 @@ namespace spaceShooter.Code.GameClasses {
             }
         }
 
-        private void reposition(Vector2f center) {
-
+        private void reposition(Vector2f ship) {
+            Console.WriteLine("repositioning");
+            for (int i = 0; i < bgSprites.Length; i++) {
+                //set the sprite positions to a 3x3 grid
+                int x = (i % 3) - 1;
+                int y = (i / 3) - 1;
+                bgSprites[i].Position = new Vector2f(ship.X - (bgRenderTexture.Size.X / 2) + x * bgRenderTexture.Size.X,
+                    ship.Y - (bgRenderTexture.Size.Y / 2) + y * bgRenderTexture.Size.Y);
+                bgRects[i] = bgSprites[i].GetGlobalBounds();
+            }
         }
 
         internal void draw() {
