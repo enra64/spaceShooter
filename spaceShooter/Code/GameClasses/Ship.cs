@@ -11,6 +11,7 @@ namespace spaceShooter.Code.GameClasses {
         private Vector2f speedVector, thrustVector;
         private float orientation = 0, thrustLevel = 0, xGravity = .2f, yGravity = .2f;
         private Vector2f maximumSpeed = new Vector2f(35, 35);
+        private List<Bullet> bulletList = new List<Bullet>();
 
         public Ship(Vector2f _startPosition, Vector2f _size, Texture _texture)
             : base(_startPosition, _size, _texture) {
@@ -27,6 +28,16 @@ namespace spaceShooter.Code.GameClasses {
 
         public override void update() {
             base.update();
+            movement();
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+                fireBullet();
+        }
+
+        private void fireBullet() {
+            bulletList.Add(new Bullet(Sprite.Position, orientation, 0, 0, Globals.bulletTextures[0]));
+        }
+
+        private void movement(){
             //basic idea: we have a certain inherent "gravity" slowing down the ship. if the engine thrust is increased,
             //the ship will be sped up in that direction. later on, it should be possible to "drift".
             if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))

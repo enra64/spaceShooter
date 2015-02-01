@@ -23,6 +23,7 @@ namespace spaceShooter.Code {
 
         public static List<Texture> startMenuTextures = new List<Texture>();
         public static List<Texture> shipTextures = new List<Texture>();
+        public static List<Texture> bulletTextures = new List<Texture>();
         public static Texture starTexture;
     }
 }

@@ -18,6 +18,13 @@ namespace spaceShooter.Code.GameClasses {
             Sprite.Position = _startPosition;
         }
 
+        public ProtoGameObject(Vector2f _startPosition, Vector2u _size, Texture _texture) {
+            Sprite = new Sprite(_texture);
+            Sprite.Scale = new Vector2f((float)_size.X / (float)_texture.Size.X, (float)_size.Y / (float)_texture.Size.Y);
+            Size = new Vector2f(_size.X, _size.Y);
+            Sprite.Position = _startPosition;
+        }
+
         public virtual void update(){}
 
         public virtual void draw(){

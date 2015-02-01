@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\GameClasses\Background.cs" />
+    <Compile Include="Code\GameClasses\Bullet.cs" />
     <Compile Include="Code\GameClasses\ProtoGameObject.cs" />
     <Compile Include="Code\GameClasses\Ship.cs" />
     <Compile Include="Code\GameClasses\UserInterface.cs" />
@@ -79,6 +80,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Sprites\background\flare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sprites\Bullets\laser.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Sprites\Ships\smallorange.png">
