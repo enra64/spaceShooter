@@ -10,12 +10,14 @@ namespace spaceShooter.Code.GameClasses {
     abstract class ProtoGameObject {
         public Vector2f Size {get; set;}
         public Sprite Sprite { get; set; }
+        public float Health { get; set;}
 
         public ProtoGameObject(Vector2f _startPosition, Vector2f _size, Texture _texture) {
             Sprite = new Sprite(_texture);
             Sprite.Scale = new Vector2f((float)_size.X / (float)_texture.Size.X, (float)_size.Y / (float)_texture.Size.Y);
             Size = _size;
             Sprite.Position = _startPosition;
+            Health = 100;
         }
 
         public ProtoGameObject(Vector2f _startPosition, Vector2u _size, Texture _texture) {
@@ -29,6 +31,10 @@ namespace spaceShooter.Code.GameClasses {
 
         public virtual void draw(){
             Controller.Window.Draw(Sprite);
+        }
+
+        public FloatRect GlobalBounding {
+            get { return Sprite.GetGlobalBounds(); }
         }
 
         public Vector2f GlobalCenter {

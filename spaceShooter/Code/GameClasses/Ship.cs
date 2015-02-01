@@ -10,9 +10,19 @@ using System.Threading.Tasks;
 namespace spaceShooter.Code.GameClasses {
     class Ship : ProtoGameObject {
         private Vector2f speedVector, thrustVector;
-        private float orientation = 0, thrustLevel = 0, xGravity = .3f, yGravity = .3f;
+        private float xGravity = .3f, yGravity = .3f;
+        public float Orientation { get; set; }
+        public float InverseOrientation {
+            get {
+                if (Orientation >= 180)
+                    return Orientation - 180;
+                else
+                    return Orientation + 180;
+            }
+        }
+        public float Thrust { get; set; }
         private Vector2f maximumSpeed = new Vector2f(35, 35);
-        private List<Bullet> bulletList = new List<Bullet>();
+        public List<Bullet> bulletList = new List<Bullet>();
         private Stopwatch bulletWatch = new Stopwatch();
 
         public Ship(Vector2f _startPosition, Vector2f _size, Texture _texture)
@@ -39,9 +49,9 @@ namespace spaceShooter.Code.GameClasses {
 
         private void bulletControl() {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
-                if (bulletWatch.ElapsedMilliseconds > 250) {
+                if (bulletWatch.ElapsedMilliseconds > 200) {
                     Console.WriteLine("firing");
-                    bulletList.Add(new Bullet(Sprite.Position, orientation, 0, 0, Globals.bulletTextures[0]));
+                    bulletList.Add(new Bullet(Sprite.Position, Orientation, 0, 0, Globals.bulletTextures[0]));
                     bulletWatch.Restart();
                 }
             }
@@ -54,29 +64,29 @@ namespace spaceShooter.Code.GameClasses {
             //basic idea: we have a certain inherent "gravity" slowing down the ship. if the engine thrust is increased,
             //the ship will be sped up in that direction. later on, it should be possible to "drift".
             if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))
-                if (thrustLevel < 100)
-                    thrustLevel += 1f;
+                if (Thrust < 100)
+                    Thrust += 1f;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.LControl))
-                if (thrustLevel > 1)
-                    thrustLevel -= 2f;
+                if (Thrust > 1)
+                    Thrust -= 2f;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.X))
-                thrustLevel = 0;
+                Thrust = 0;
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.A))
-                orientation -= 4;
+                Orientation -= 5;
             if (Keyboard.IsKeyPressed(Keyboard.Key.D))
-                orientation += 4;
+                Orientation += 5;
 
-            if (orientation > 359)
-                orientation -= 360;
-            if (orientation < 0)
-                orientation += 360;
+            if (Orientation > 359)
+                Orientation -= 360;
+            if (Orientation < 0)
+                Orientation += 360;
 
             Console.WriteLine(Sprite.Position + "  " + Sprite.Origin);
 
-            Sprite.Rotation = orientation;
+            Sprite.Rotation = Orientation;
 
             //slow down ship b/c gravity
             if (speedVector.X >= xGravity)
@@ -90,9 +100,9 @@ namespace spaceShooter.Code.GameClasses {
                 speedVector.Y += yGravity;
 
             //calculate thrust angel
-            thrustVector.Y = (float)Math.Sin(Math.PI * orientation / 180);
-            thrustVector.X = (float)Math.Cos(Math.PI * orientation / 180);
-            Vector2f multipliedThrust = (thrustVector * thrustLevel) / 2.5f;
+            thrustVector.Y = (float)Math.Sin(Math.PI * Orientation / 180);
+            thrustVector.X = (float)Math.Cos(Math.PI * Orientation / 180);
+            Vector2f multipliedThrust = (thrustVector * Thrust) / 4f;
 
             //add thrust to speed
             if (Math.Abs(speedVector.X + multipliedThrust.X) > maximumSpeed.X)

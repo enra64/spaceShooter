@@ -18,7 +18,7 @@ namespace spaceShooter.Code.Gamestates {
         public Game () {
             myShip = new Ship(new Vector2f(2000, 2000), new Vector2f(Globals.shipTextures[0].Size.X, Globals.shipTextures[0].Size.Y), Globals.shipTextures[0]);
             background = new Background(this);
-            asteroids = new AsteroidKeeper(100);
+            asteroids = new AsteroidKeeper(100, this);
         }
 
         public override void draw() {

@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace spaceShooter.Code.GameClasses {
     class Asteroid : ProtoGameObject{
-        public int Health { get; set; }
-        private Vector2f direction;
+        public Vector2f Direction { get; set; }
         private float rotation;
 
         public Asteroid(Vector2f _pos, Vector2f _dir, float _rotation, Texture _tex)
             : base(_pos, _tex.Size, _tex) {
-                direction = _dir;
+                Direction = _dir;
                 rotation = _rotation;
                 Sprite.Origin = LocalCenter;
+                Health = 100;
         }
 
         public override void update() {
             base.update();
-            Sprite.Position += direction;
+            Sprite.Position += Direction;
             Sprite.Rotation += rotation;
         }
     }
