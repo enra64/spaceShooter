@@ -103,7 +103,7 @@ namespace spaceShooter.Code.GameClasses {
                     bgDraw[i] = false;
             }
             if (doRepos)
-                reposition(gameReference.myShip.Center);
+                reposition(gameReference.myShip.GlobalCenter);
         }
 
         public void moveBackground(moveDirection whichDirection) {

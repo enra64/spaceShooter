@@ -2,6 +2,7 @@
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,32 +10,44 @@ using System.Threading.Tasks;
 namespace spaceShooter.Code.GameClasses {
     class Ship : ProtoGameObject {
         private Vector2f speedVector, thrustVector;
-        private float orientation = 0, thrustLevel = 0, xGravity = .2f, yGravity = .2f;
+        private float orientation = 0, thrustLevel = 0, xGravity = .3f, yGravity = .3f;
         private Vector2f maximumSpeed = new Vector2f(35, 35);
         private List<Bullet> bulletList = new List<Bullet>();
+        private Stopwatch bulletWatch = new Stopwatch();
 
         public Ship(Vector2f _startPosition, Vector2f _size, Texture _texture)
             : base(_startPosition, _size, _texture) {
             speedVector = new Vector2f();
             thrustVector = new Vector2f();
-            Sprite.Origin = new Vector2f((this.Center.X * 1f) - _startPosition.X, this.Center.Y - _startPosition.Y);
+            Sprite.Origin = new Vector2f((this.GlobalCenter.X * 1f) - _startPosition.X, this.GlobalCenter.Y - _startPosition.Y);
+            bulletWatch.Start();
         }
 
         public override void draw(){
             Controller.View.Center = Sprite.Position + 1 * Sprite.Origin;
             Controller.Window.SetView(Controller.View);
+            foreach (Bullet b in bulletList)
+                b.draw();
             Controller.Window.Draw(Sprite);
         }
 
         public override void update() {
             base.update();
             movement();
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
-                fireBullet();
+            bulletControl();
         }
 
-        private void fireBullet() {
-            bulletList.Add(new Bullet(Sprite.Position, orientation, 0, 0, Globals.bulletTextures[0]));
+        private void bulletControl() {
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
+                if (bulletWatch.ElapsedMilliseconds > 250) {
+                    Console.WriteLine("firing");
+                    bulletList.Add(new Bullet(Sprite.Position, orientation, 0, 0, Globals.bulletTextures[0]));
+                    bulletWatch.Restart();
+                }
+            }
+            
+            foreach (Bullet b in bulletList)
+                b.update();
         }
 
         private void movement(){

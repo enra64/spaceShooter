@@ -31,9 +31,15 @@ namespace spaceShooter.Code.GameClasses {
             Controller.Window.Draw(Sprite);
         }
 
-        public Vector2f Center {
+        public Vector2f GlobalCenter {
             get {
                 return new Vector2f(Sprite.Position.X + Size.X / 2f, Sprite.Position.Y + Size.Y / 2f); 
+            }
+        }
+
+        public Vector2f LocalCenter {
+            get {
+                return new Vector2f(Size.X / 2f, Size.Y / 2f);
             }
         }
     }

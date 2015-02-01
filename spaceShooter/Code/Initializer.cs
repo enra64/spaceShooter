@@ -48,6 +48,8 @@ namespace spaceShooter {
             Globals.starTexture = new Texture("Assets/Sprites/background/flare.png");
 
             Globals.bulletTextures.Add(new Texture("Assets/Sprites/Bullets/laser.png"));
+
+            Globals.asteroidTextures.Add(new Texture("Assets/Sprites/Asteroids/asteroid.png"));
         }
     }
 }
