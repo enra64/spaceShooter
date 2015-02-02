@@ -22,6 +22,10 @@ namespace spaceShooter.Code.GameClasses {
         public override void update() {
             base.update();
             Sprite.Position += Direction;
+            if (Direction.X > 2)
+                Direction.X-=1;
+            if (Direction.Y > 2)
+                Direction.Y--;
             Sprite.Rotation += rotation;
         }
     }

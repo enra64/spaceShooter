@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace spaceShooter.Code.GameClasses {
     class Ship : ProtoGameObject {
-        private Vector2f speedVector, thrustVector;
+        private Vector2f thrustVector;
         private float xGravity = .3f, yGravity = .3f;
         public float Orientation { get; set; }
         public float InverseOrientation {
@@ -20,14 +20,15 @@ namespace spaceShooter.Code.GameClasses {
                     return Orientation + 180;
             }
         }
-        public float Thrust { get; set; }
+        public float Thrust { get; private set; }
+        public Vector2f SpeedVector { get; private set; }
         private Vector2f maximumSpeed = new Vector2f(35, 35);
         public List<Bullet> bulletList = new List<Bullet>();
         private Stopwatch bulletWatch = new Stopwatch();
 
         public Ship(Vector2f _startPosition, Vector2f _size, Texture _texture)
             : base(_startPosition, _size, _texture) {
-            speedVector = new Vector2f();
+            SpeedVector = new Vector2f();
             thrustVector = new Vector2f();
             Sprite.Origin = new Vector2f((this.GlobalCenter.X * 1f) - _startPosition.X, this.GlobalCenter.Y - _startPosition.Y);
             bulletWatch.Start();
@@ -89,15 +90,15 @@ namespace spaceShooter.Code.GameClasses {
             Sprite.Rotation = Orientation;
 
             //slow down ship b/c gravity
-            if (speedVector.X >= xGravity)
-                speedVector.X -= xGravity;
-            if (speedVector.X <= -xGravity)
-                speedVector.X += xGravity;
+            if (SpeedVector.X >= xGravity)
+                SpeedVector.X -= xGravity;
+            if (SpeedVector.X <= -xGravity)
+                SpeedVector.X += xGravity;
 
-            if (speedVector.Y >= yGravity)
-                speedVector.Y -= yGravity;
-            if (speedVector.Y <= -yGravity)
-                speedVector.Y += yGravity;
+            if (SpeedVector.Y >= yGravity)
+                SpeedVector.Y -= yGravity;
+            if (SpeedVector.Y <= -yGravity)
+                SpeedVector.Y += yGravity;
 
             //calculate thrust angel
             thrustVector.Y = (float)Math.Sin(Math.PI * Orientation / 180);
@@ -105,22 +106,22 @@ namespace spaceShooter.Code.GameClasses {
             Vector2f multipliedThrust = (thrustVector * Thrust) / 4f;
 
             //add thrust to speed
-            if (Math.Abs(speedVector.X + multipliedThrust.X) > maximumSpeed.X)
-                speedVector.X = maximumSpeed.X * Math.Sign(multipliedThrust.X);
+            if (Math.Abs(SpeedVector.X + multipliedThrust.X) > maximumSpeed.X)
+                SpeedVector.X = maximumSpeed.X * Math.Sign(multipliedThrust.X);
             else
-                speedVector.X += multipliedThrust.X;
+                SpeedVector.X += multipliedThrust.X;
 
-            if (Math.Abs(speedVector.Y + multipliedThrust.Y) > maximumSpeed.Y)
-                speedVector.Y = maximumSpeed.Y * Math.Sign(multipliedThrust.Y);
+            if (Math.Abs(SpeedVector.Y + multipliedThrust.Y) > maximumSpeed.Y)
+                SpeedVector.Y = maximumSpeed.Y * Math.Sign(multipliedThrust.Y);
             else
-                speedVector.Y += multipliedThrust.Y;
+                SpeedVector.Y += multipliedThrust.Y;
 
-            if (Math.Abs(speedVector.X) < 0.15f)
-                speedVector.X = 0;
-            if (Math.Abs(speedVector.Y) < 0.15f)
-                speedVector.Y = 0;
+            if (Math.Abs(SpeedVector.X) < 0.15f)
+                SpeedVector.X = 0;
+            if (Math.Abs(SpeedVector.Y) < 0.15f)
+                SpeedVector.Y = 0;
 
-            Sprite.Position += speedVector;
+            Sprite.Position += SpeedVector;
         }
     }
 }

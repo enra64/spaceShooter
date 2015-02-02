@@ -38,8 +38,9 @@ namespace spaceShooter.Code.GameClasses {
                 if (a.GlobalBounding.Intersects(reference.myShip.GlobalBounding)) { 
                     reference.myShip.Health -= 20;
                     //move asteroid opposite to ship
-                    a.Direction = new Vector2f((float)Math.Cos(Math.PI * reference.myShip.InverseOrientation / 180) * reference.myShip.Thrust / 25f,
-                        (float)Math.Cos(Math.PI * reference.myShip.InverseOrientation / 180) * reference.myShip.Thrust / 25f);
+                    float xNewSpeed = (float)Math.Cos(Math.PI * reference.myShip.Orientation / 180f) * reference.myShip.Thrust;
+                    float yNewSpeed = (float)Math.Cos(Math.PI * reference.myShip.Orientation / 180f) * reference.myShip.Thrust;
+                    a.Direction = new Vector2f(xNewSpeed, yNewSpeed);
                 }
             }
             
