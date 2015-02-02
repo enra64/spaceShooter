@@ -132,7 +132,7 @@ namespace spaceShooter.Code.GameClasses {
                     break;
             }
             //move sprites
-            for (int i = 0; i < bgSprites.Length; i++) {
+            for (int i = 0; i < bgSprites.Length; i++){
                 bgSprites[i].Position += change;
                 bgRects[i] = bgSprites[i].GetGlobalBounds();
                 testShapes[i].Position += change;
