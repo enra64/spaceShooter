@@ -21,7 +21,7 @@ namespace spaceShooter.Code.GameClasses {
             }
         }
         public float Thrust { get; private set; }
-        public Vector2f SpeedVector { get; private set; }
+        public Vector2f SpeedVector;
         private Vector2f maximumSpeed = new Vector2f(35, 35);
         public List<Bullet> bulletList = new List<Bullet>();
         private Stopwatch bulletWatch = new Stopwatch();

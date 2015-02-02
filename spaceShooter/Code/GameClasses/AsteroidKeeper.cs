@@ -12,6 +12,7 @@ namespace spaceShooter.Code.GameClasses {
         private int asteroidCount;
         private Random r = new Random();
         private Game reference;
+        private static Vector2f addToMoveAwaySpeed = new Vector2f(4, 4);
 
         public AsteroidKeeper(int _asteroidCount, Game _reference) {
             asteroidCount = _asteroidCount;
@@ -37,10 +38,10 @@ namespace spaceShooter.Code.GameClasses {
                 }
                 if (a.GlobalBounding.Intersects(reference.myShip.GlobalBounding)) { 
                     reference.myShip.Health -= 20;
-                    //move asteroid opposite to ship
-                    float xNewSpeed = (float)Math.Cos(Math.PI * reference.myShip.Orientation / 180f) * reference.myShip.Thrust;
-                    float yNewSpeed = (float)Math.Cos(Math.PI * reference.myShip.Orientation / 180f) * reference.myShip.Thrust;
-                    a.Direction = new Vector2f(xNewSpeed, yNewSpeed);
+                    //move asteroid away from ship
+                    float xNew = reference.myShip.SpeedVector.X * ((float)r.Next(8, 14) / 5f);
+                    float yNew = reference.myShip.SpeedVector.Y * ((float)r.Next(8, 14) / 5f);
+                    a.Direction = new Vector2f(xNew, yNew);
                 }
             }
             
