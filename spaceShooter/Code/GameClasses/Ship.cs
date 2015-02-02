@@ -20,7 +20,7 @@ namespace spaceShooter.Code.GameClasses {
                     return Orientation + 180;
             }
         }
-        public float Thrust { get; set; }
+        public float Thrust { get; private set; }
         public Vector2f SpeedVector;
         private Vector2f maximumSpeed = new Vector2f(35, 35);
         public List<Bullet> bulletList = new List<Bullet>();
