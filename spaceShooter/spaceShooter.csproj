@@ -59,7 +59,7 @@
     <Compile Include="Code\GameClasses\UI\Container.cs" />
     <Compile Include="Code\GameClasses\UI\ProtoUIObject.cs" />
     <Compile Include="Code\GameClasses\UI\UserInterface.cs" />
-    <Compile Include="Code\GameClasses\UI\ViewElement.cs" />
+    <Compile Include="Code\GameClasses\UI\TestView.cs" />
     <Compile Include="Code\Gamestates\EndScreen.cs" />
     <Compile Include="Code\Gamestates\Game.cs" />
     <Compile Include="Code\Gamestates\SubMenu.cs" />

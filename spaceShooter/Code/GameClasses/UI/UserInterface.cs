@@ -13,12 +13,19 @@ namespace spaceShooter.Code.GameClasses {
         private View uiView;
         private Game reference;
         private Vector2f size;
-        private ProtoUIObject mainContainer;
+        private Container mainContainer;
 
         public UserInterface(Vector2f _size, Game _ref) {
             size = _size;
             reference = _ref;
-            mainContainer = new Container(_size, _ref, "main_container");
+            mainContainer = new Container(_size, new Vector2f(0,0), _ref, "main_container", false);
+            construct();
+            uiView = new View(new FloatRect(0, 0, _size.X, _size.Y));
+            uiView.Viewport = new FloatRect(0, .75f, 1, .25f);
+        }
+
+        private void construct() {
+            mainContainer.Add(new TestView(new Vector2f(), new Vector2f(), reference, "test_view"));
         }
 
         public void update() {
@@ -27,7 +34,7 @@ namespace spaceShooter.Code.GameClasses {
 
         public void draw() {
             Controller.Window.SetView(uiView);
-            mainContainer.draw();
+            mainContainer.draw(uiView);
         }
     }
 }
