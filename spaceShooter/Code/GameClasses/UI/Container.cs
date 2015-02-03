@@ -18,17 +18,23 @@ namespace spaceShooter.Code.GameClasses.UI {
         }
 
         public void Add(ProtoUIObject p) {
+            Vector2f _size, _positionDelta;
+            containList.Add(p);
             //arrange views on top of each other
             if (vertical) {
-                p.Size = new Vector2f(Size.X, Size.Y / (containList.Count + 1));
-                p.Position = new Vector2f(0, p.Size.Y * containList.Count);
+                _size = new Vector2f(Size.X, Size.Y / (containList.Count));
+                _positionDelta = new Vector2f(0, _size.Y);
             }
             //arrange views next to each other
             else {
-                p.Size = new Vector2f(Size.X / (containList.Count + 1), Size.Y);
-                p.Position = new Vector2f(p.Size.X * containList.Count, 0);
+                _size = new Vector2f(Size.X / (containList.Count), Size.Y);
+                _positionDelta = new Vector2f(_size.X, 0);
             }
-            containList.Add(p);
+            //renew all positions
+            for (int i = 0; i < containList.Count; i++) {
+                containList[i].Position = _positionDelta * i;
+                containList[i].Size = _size;
+            }
         }
 
         public ProtoUIObject Get(int itemID) {

@@ -18,14 +18,15 @@ namespace spaceShooter.Code.GameClasses {
         public UserInterface(Vector2f _size, Game _ref) {
             size = _size;
             reference = _ref;
-            mainContainer = new Container(_size, new Vector2f(0,0), _ref, "main_container", false);
             construct();
             uiView = new View(new FloatRect(0, 0, _size.X, _size.Y));
             uiView.Viewport = new FloatRect(0, .75f, 1, .25f);
         }
 
         private void construct() {
+            mainContainer = new Container(size, new Vector2f(0,0), reference, "main_container", false);
             mainContainer.Add(new TestView(new Vector2f(), new Vector2f(), reference, "test_view"));
+            mainContainer.Add(new Healthbar(new Vector2f(), new Vector2f(), reference, "health_view"));
         }
 
         public void update() {

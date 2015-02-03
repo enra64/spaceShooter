@@ -39,8 +39,8 @@ namespace spaceShooter.Code.GameClasses {
                 if (a.GlobalBounding.Intersects(reference.myShip.GlobalBounding)) { 
                     reference.myShip.Health -= 20;
                     //move asteroid away from ship
-                    float xNew = reference.myShip.SpeedVector.X * ((float)r.Next(8, 14) / 5f);
-                    float yNew = reference.myShip.SpeedVector.Y * ((float)r.Next(8, 14) / 5f);
+                    float xNew = reference.myShip.SpeedVector.X * ((float)r.Next(6, 12) / 5f);
+                    float yNew = reference.myShip.SpeedVector.Y * ((float)r.Next(6, 12) / 5f);
                     a.Direction = new Vector2f(xNew, yNew);
                 }
             }
