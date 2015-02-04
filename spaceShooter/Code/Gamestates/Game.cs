@@ -19,7 +19,7 @@ namespace spaceShooter.Code.Gamestates {
         public Game () {
             myShip = new Ship(new Vector2f(2000, 2000), new Vector2f(Globals.shipTextures[0].Size.X, Globals.shipTextures[0].Size.Y), Globals.shipTextures[0]);
             background = new Background(this);
-            asteroids = new AsteroidKeeper(100, this);
+            asteroids = new AsteroidKeeper(2, this);
             ui = new UserInterface(new Vector2f(Controller.Window.Size.X, Controller.Window.Size.Y / 4), this);
         }
 

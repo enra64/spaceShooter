@@ -85,7 +85,7 @@ namespace spaceShooter.Code.GameClasses {
             if (Orientation < 0)
                 Orientation += 360;
 
-            Console.WriteLine(Sprite.Position + "  " + Sprite.Origin);
+            //Console.WriteLine(Sprite.Position + "  " + Sprite.Origin);
 
             Sprite.Rotation = Orientation;
 

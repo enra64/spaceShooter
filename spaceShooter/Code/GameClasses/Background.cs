@@ -65,7 +65,8 @@ namespace spaceShooter.Code.GameClasses {
 
         public void update() {
             View calcView = Controller.Window.GetView();
-            FloatRect overlap, calcPort = new FloatRect(calcView.Center.X - 1366 /*calcView.Size.X*/ / 2, calcView.Center.Y - 768 /*calcView.Size.Y*/ / 2, 1366, 768);
+            FloatRect overlap, calcPort = new FloatRect(calcView.Center.X - Controller.Window.Size.X / 2, calcView.Center.Y - Controller.Window.Size.Y / 2, 
+                Controller.Window.Size.X, Controller.Window.Size.Y);
 
             //move the sprite if the view is moving off of it
             calcPort.Intersects(bgRects[4], out overlap);
