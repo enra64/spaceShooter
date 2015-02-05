@@ -34,9 +34,12 @@ namespace spaceShooter.Code.GameClasses {
         }
 
         public void draw() {
-            View oldView = Controller.Window.GetView();
+            //get a deep copy
+            View oldView = new View(Controller.Window.GetView());
+            //change view
             Controller.Window.SetView(uiView);
-            mainContainer.draw(uiView);
+            mainContainer.draw();
+            //switch back to old view
             Controller.Window.SetView(oldView);
         }
     }

@@ -35,7 +35,7 @@ namespace spaceShooter.Code.GameClasses {
         }
 
         public override void draw(){
-            Controller.View.Center = Sprite.Position + 1 * Sprite.Origin;
+            Controller.View.Center = Sprite.Position + Sprite.Origin;
             Controller.Window.SetView(Controller.View);
             foreach (Bullet b in bulletList)
                 b.draw();

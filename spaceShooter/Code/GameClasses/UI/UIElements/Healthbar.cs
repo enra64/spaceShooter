@@ -19,8 +19,7 @@ namespace spaceShooter.Code.GameClasses.UI {
         }
 
 
-        public override void draw(View _uiView) {
-            Controller.Window.SetView(_uiView);
+        public override void draw() {
             Controller.Window.Draw(r);
         }
 

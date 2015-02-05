@@ -45,10 +45,13 @@ namespace spaceShooter.Code.GameClasses.UI {
             return containList.Find(x => x.Tag == itemTag);
         }
 
-        public override void draw(View _uiView) {
+        /// <summary>
+        /// Draws everything in this container; does _not_ handle views
+        /// </summary>
+        public override void draw() {
             foreach (ProtoUIObject p in containList)
                 if (p != null)
-                    p.draw(_uiView);
+                    p.draw();
         }
 
         public override void update() {

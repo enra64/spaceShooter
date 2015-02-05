@@ -20,7 +20,7 @@ namespace spaceShooter.Code.GameClasses.UI {
             reference = _ref;
         }
 
-        public abstract void draw(View _uiView);
+        public abstract void draw();
         public abstract void update();
     }
 }

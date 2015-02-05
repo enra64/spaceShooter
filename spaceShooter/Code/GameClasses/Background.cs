@@ -42,6 +42,7 @@ namespace spaceShooter.Code.GameClasses {
                 starList[i].Color = new Color((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(200));
                 starList[i].Position = new Vector2f(r.Next((int)bgRenderTexture.Size.X), r.Next((int)bgRenderTexture.Size.Y));
             }
+
             bgRenderTexture.Clear();
             foreach (Sprite s in starList)
                 bgRenderTexture.Draw(s);
@@ -67,6 +68,8 @@ namespace spaceShooter.Code.GameClasses {
             View calcView = Controller.Window.GetView();
             FloatRect overlap, calcPort = new FloatRect(calcView.Center.X - Controller.Window.Size.X / 2, calcView.Center.Y - Controller.Window.Size.Y / 2, 
                 Controller.Window.Size.X, Controller.Window.Size.Y);
+
+            Console.WriteLine(calcPort);
 
             //move the sprite if the view is moving off of it
             calcPort.Intersects(bgRects[4], out overlap);
@@ -109,34 +112,34 @@ namespace spaceShooter.Code.GameClasses {
 
         public void moveBackground(moveDirection whichDirection) {
             //recalculate bgrects, move all in one direction
-            Vector2f change = new Vector2f();
+            Vector2f moveDelta = new Vector2f();
             switch (whichDirection) {
                 case moveDirection.left:
-                    change.X -= bgRenderTexture.Size.X;
+                    moveDelta.X -= bgRenderTexture.Size.X;
                     bgMoved[2] = true;
                     Console.WriteLine("left");
                     break;
                 case moveDirection.right:
-                    change.X += bgRenderTexture.Size.X;
+                    moveDelta.X += bgRenderTexture.Size.X;
                     bgMoved[0] = true;
                     Console.WriteLine("right");
                     break;
                 case moveDirection.up:
-                    change.Y -= bgRenderTexture.Size.Y;
+                    moveDelta.Y -= bgRenderTexture.Size.Y;
                     bgMoved[1] = true;
                     Console.WriteLine("top");
                     break;
                 case moveDirection.down:
-                    change.Y += bgRenderTexture.Size.Y;
+                    moveDelta.Y += bgRenderTexture.Size.Y;
                     bgMoved[3] = true;
                     Console.WriteLine("bottom");
                     break;
             }
             //move sprites
             for (int i = 0; i < bgSprites.Length; i++){
-                bgSprites[i].Position += change;
+                bgSprites[i].Position += moveDelta;
                 bgRects[i] = bgSprites[i].GetGlobalBounds();
-                testShapes[i].Position += change;
+                testShapes[i].Position += moveDelta;
             }
         }
 
