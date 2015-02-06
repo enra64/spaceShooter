@@ -1,4 +1,5 @@
-﻿using SFML.Window;
+﻿using SFML.Graphics;
+using SFML.Window;
 using spaceShooter.Code.Gamestates;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace spaceShooter.Code.GameClasses {
     class AsteroidKeeper {
-        private List<Asteroid> asteroidList = new List<Asteroid>();
+        private List<List<Asteroid>> outerList = new List<List<Asteroid>>();
         private int asteroidCount, idCounter = 0;
         private Random r = new Random();
         private Game reference;
@@ -17,23 +18,59 @@ namespace spaceShooter.Code.GameClasses {
         public AsteroidKeeper(int _asteroidCount, Game _reference) {
             asteroidCount = _asteroidCount;
             reference = _reference;
-            for (int i = 0; i < _asteroidCount; i++) {
-                float rotation = r.Next(4) * (1 - 2 * r.Next(2));
-                //Vector2f position = new Vector2f(r.Next(8000), r.Next(8000));
-                Vector2f position = new Vector2f(800 + i * 200, 2000);
-                Vector2f direction = new Vector2f((float)r.Next(10) / 10f, (float)r.Next(10) / 10f);
-                asteroidList.Add(new Asteroid(position, direction, rotation, Globals.asteroidTextures[r.Next(0)], idCounter));
-                idCounter++;
+            generateAsteroids(_asteroidCount);
+        }
+
+        private void generateAsteroids(int astCount) {
+            for (int mainCounter = 0; mainCounter < 9; mainCounter++) {
+                outerList.Add(new List<Asteroid>());
+                FloatRect bgFloat = reference.background.bgRects[mainCounter];
+                for (int subCounter = 0; subCounter < astCount; subCounter++){
+                    float rotation = r.Next(4) * (1 - 2 * r.Next(2));
+                    Vector2f position = new Vector2f(r.Next((int)bgFloat.Width) + bgFloat.Left, r.Next((int)bgFloat.Height) + bgFloat.Top);
+                    Vector2f direction = new Vector2f((float)r.Next(10) / 10f, (float)r.Next(10) / 10f);
+                    outerList[mainCounter].Add(new Asteroid(position, direction, rotation, Globals.asteroidTextures[r.Next(0)], idCounter));
+                    idCounter++;
+                }
             }
         }
 
         public void update(){
-            foreach (Asteroid a in asteroidList)
+            //only update inner floatrect
+            List<Asteroid> centerReference = outerList[4];
+            //updating
+            foreach (Asteroid a in centerReference)
                 a.update();
+
+            collisionHandling(centerReference);
+
+            //asteroid dying
+            for (int i = centerReference.Count - 1; i >= 0; i--)
+                if (centerReference[i].Health <= 0)
+                    centerReference.RemoveAt(i);
+        }
+
+        internal void moveAsteroids(Globals.moveDirection where) {
+            //for every outer list, move all asteroids to new random positions, but
+            //keep the positions of the mid asteroids
+            for (int mainCounter = 0; mainCounter < 9; mainCounter++) {
+                FloatRect bgFloat = reference.background.bgRects[mainCounter];
+                List<Asteroid> innerReference = outerList[mainCounter];
+
+                for (int i = 0; i < innerReference.Count; i++) {
+                    Vector2f nextPosition = new Vector2f(r.Next((int)bgFloat.Width) + bgFloat.Left, r.Next((int)bgFloat.Height) + bgFloat.Top);
+                    innerReference[i].Sprite.Position = nextPosition;
+                }
+            }
+            //because i dont want to interrupt the asteroid look, we move only a specific set of tiles on each move-command.
+            
+        }
+
+        private void collisionHandling(List<Asteroid> centerReference) {
             //collision
-            foreach (Asteroid a in asteroidList){
+            foreach (Asteroid a in centerReference) {
                 //with bullets
-                for (int i = reference.myShip.bulletList.Count - 1; i >= 0; i--){
+                for (int i = reference.myShip.bulletList.Count - 1; i >= 0; i--) {
                     Bullet b = reference.myShip.bulletList[i];
                     if (a.GlobalBounding.Intersects(b.GlobalBounding)) {
                         a.Health -= 20;
@@ -41,7 +78,7 @@ namespace spaceShooter.Code.GameClasses {
                     }
                 }
                 //with myShip
-                if (a.GlobalBounding.Intersects(reference.myShip.GlobalBounding)) { 
+                if (a.GlobalBounding.Intersects(reference.myShip.GlobalBounding)) {
                     reference.myShip.Health -= 20;
                     //move asteroid away from ship
                     float xNew = reference.myShip.SpeedVector.X * ((float)r.Next(6, 12) / 5f);
@@ -50,11 +87,11 @@ namespace spaceShooter.Code.GameClasses {
                 }
                 bool noCollision = true;
                 //with other asteroids
-                for (int i = asteroidList.Count - 1; i >= 0; i--) {
-                    Asteroid b = asteroidList[i];
+                for (int i = centerReference.Count - 1; i >= 0; i--) {
+                    Asteroid b = centerReference[i];
                     //hopefully checks reference identity
                     if (b != a) {
-                        if (asteroidList[i].GlobalBounding.Intersects(a.GlobalBounding)) {
+                        if (centerReference[i].GlobalBounding.Intersects(a.GlobalBounding)) {
                             //stop swapping collision avoid
                             if (!a.CollisionHandled && !b.CollisionHandled) {
                                 Vector2f transferDirection = a.Direction;
@@ -70,15 +107,14 @@ namespace spaceShooter.Code.GameClasses {
                 if (noCollision)
                     a.CollisionHandled = false;
             }
-            
-            for (int i = asteroidList.Count - 1; i >= 0; i--)
-                if (asteroidList[i].Health <= 0)
-                    asteroidList.RemoveAt(i);
         }
 
         public void draw(){
-            foreach (Asteroid a in asteroidList)
-                a.draw();
+            /*
+            foreach (List<Asteroid> l in outerList)
+                foreach (Asteroid a in l)
+                    a.draw();
+            */
         }
     }
 }

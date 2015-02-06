@@ -13,7 +13,7 @@ namespace spaceShooter.Code.GameClasses {
         Game gameReference;
 
         Sprite[] bgSprites = new Sprite[9];
-        FloatRect[] bgRects = new FloatRect[9];
+        public FloatRect[] bgRects = new FloatRect[9];
         Boolean[] bgDraw = new Boolean[9];
         /// <summary>
         /// right top left bottom
@@ -21,31 +21,11 @@ namespace spaceShooter.Code.GameClasses {
         Boolean[] bgMoved = new Boolean[4];
         RectangleShape[] testShapes = new RectangleShape[9];
 
-        public enum moveDirection {
-            none,
-            left,
-            down,
-            right,
-            up
-        };
-
         public Background(Game _ref) {
-            List<Sprite> starList = new List<Sprite>();
-            Random r = new Random();
-            Vector2u textureSize = Globals.starTexture.Size;
+            Vector2u starTextureSize = Globals.starTexture.Size;
             gameReference = _ref;
 
-            for (int i = 0; i < 10000; i++) {
-                starList.Add(new Sprite(Globals.starTexture));
-                float nextScale = (float)r.Next(10) / 15f;
-                starList[i].Scale = new Vector2f(nextScale, nextScale);
-                starList[i].Color = new Color((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(200));
-                starList[i].Position = new Vector2f(r.Next((int)bgRenderTexture.Size.X), r.Next((int)bgRenderTexture.Size.Y));
-            }
-
-            bgRenderTexture.Clear();
-            foreach (Sprite s in starList)
-                bgRenderTexture.Draw(s);
+            generateTexture();
 
             //create bg tiles
             for (int i = 0; i < bgSprites.Length; i++) {
@@ -62,6 +42,22 @@ namespace spaceShooter.Code.GameClasses {
                 else
                     testShapes[i].FillColor = Color.Green;
             }
+        }
+
+        private void generateTexture() {
+            List<Sprite> starList = new List<Sprite>();
+            Random r = new Random();
+            for (int i = 0; i < 10000; i++) {
+                starList.Add(new Sprite(Globals.starTexture));
+                float nextScale = (float)r.Next(10) / 15f;
+                starList[i].Scale = new Vector2f(nextScale, nextScale);
+                starList[i].Color = new Color((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(200));
+                starList[i].Position = new Vector2f(r.Next((int)bgRenderTexture.Size.X), r.Next((int)bgRenderTexture.Size.Y));
+            }
+
+            bgRenderTexture.Clear();
+            foreach (Sprite s in starList)
+                bgRenderTexture.Draw(s);
         }
 
         public void update() {
@@ -84,17 +80,17 @@ namespace spaceShooter.Code.GameClasses {
             }
 
             if (overlap.Left <= bgRects[4].Left && !bgMoved[0])
-                moveBackground(moveDirection.left);
+                gameReference.bgMoveCallBack(Globals.moveDirection.left);
 
             if (overlap.Top <= bgRects[4].Top && !bgMoved[3])
-                moveBackground(moveDirection.up);
+                gameReference.bgMoveCallBack(Globals.moveDirection.up);
 
 
             if (overlap.Left + calcPort.Width > bgRects[4].Left + bgRects[4].Width && !bgMoved[2])
-                moveBackground(moveDirection.right);
+                gameReference.bgMoveCallBack(Globals.moveDirection.right);
 
             if (overlap.Top + calcPort.Height > bgRects[4].Top + bgRects[4].Height && !bgMoved[1])
-                moveBackground(moveDirection.down);
+                gameReference.bgMoveCallBack(Globals.moveDirection.down);
 
             bool doRepos = true;
             //draw only if it would actually be seen
@@ -110,26 +106,26 @@ namespace spaceShooter.Code.GameClasses {
                 reposition(gameReference.myShip.GlobalCenter);
         }
 
-        public void moveBackground(moveDirection whichDirection) {
+        public void moveBackground(Globals.moveDirection whichDirection) {
             //recalculate bgrects, move all in one direction
             Vector2f moveDelta = new Vector2f();
             switch (whichDirection) {
-                case moveDirection.left:
+                case Globals.moveDirection.left:
                     moveDelta.X -= bgRenderTexture.Size.X;
                     bgMoved[2] = true;
                     Console.WriteLine("left");
                     break;
-                case moveDirection.right:
+                case Globals.moveDirection.right:
                     moveDelta.X += bgRenderTexture.Size.X;
                     bgMoved[0] = true;
                     Console.WriteLine("right");
                     break;
-                case moveDirection.up:
+                case Globals.moveDirection.up:
                     moveDelta.Y -= bgRenderTexture.Size.Y;
                     bgMoved[1] = true;
                     Console.WriteLine("top");
                     break;
-                case moveDirection.down:
+                case Globals.moveDirection.down:
                     moveDelta.Y += bgRenderTexture.Size.Y;
                     bgMoved[3] = true;
                     Console.WriteLine("bottom");

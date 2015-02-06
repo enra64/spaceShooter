@@ -70,6 +70,7 @@
     <Compile Include="Code\Global\Settings.cs" />
     <Compile Include="Code\Initializer.cs" />
     <Compile Include="Code\Menu\MenuItem.cs" />
+    <Compile Include="Code\UsefulStuff.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Code\MouseHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

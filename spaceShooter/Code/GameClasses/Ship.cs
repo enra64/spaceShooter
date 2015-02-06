@@ -85,8 +85,6 @@ namespace spaceShooter.Code.GameClasses {
             if (Orientation < 0)
                 Orientation += 360;
 
-            //Console.WriteLine(Sprite.Position + "  " + Sprite.Origin);
-
             Sprite.Rotation = Orientation;
 
             //slow down ship b/c gravity
@@ -103,6 +101,7 @@ namespace spaceShooter.Code.GameClasses {
             //calculate thrust angel
             thrustVector.Y = (float)Math.Sin(Math.PI * Orientation / 180);
             thrustVector.X = (float)Math.Cos(Math.PI * Orientation / 180);
+            thrustVector = UsefulStuff.normalise(thrustVector);
             Vector2f multipliedThrust = (thrustVector * Thrust) / 4f;
 
             //add thrust to speed

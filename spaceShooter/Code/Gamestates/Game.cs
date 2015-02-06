@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 namespace spaceShooter.Code.Gamestates {
     class Game : ProtoGameState {
         public Ship myShip { get; set; }
-        private Background background;
+        public Background background;
         private AsteroidKeeper asteroids;
         private UserInterface ui;
         
         public Game () {
             myShip = new Ship(new Vector2f(2000, 2000), new Vector2f(Globals.shipTextures[0].Size.X, Globals.shipTextures[0].Size.Y), Globals.shipTextures[0]);
             background = new Background(this);
-            asteroids = new AsteroidKeeper(2, this);
+            asteroids = new AsteroidKeeper(80, this);
             ui = new UserInterface(new Vector2f(Controller.Window.Size.X, Controller.Window.Size.Y / 4), this);
         }
 
@@ -46,15 +46,22 @@ namespace spaceShooter.Code.Gamestates {
                 Controller.View.Zoom(.98f);
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
-                background.moveBackground(Background.moveDirection.left);
+                background.moveBackground(Globals.moveDirection.left);
             if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
-                background.moveBackground(Background.moveDirection.right);
+                background.moveBackground(Globals.moveDirection.right);
             if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
-                background.moveBackground(Background.moveDirection.up);
+                background.moveBackground(Globals.moveDirection.up);
             if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
-                background.moveBackground(Background.moveDirection.down);
+                background.moveBackground(Globals.moveDirection.down);
             
             Controller.Window.SetView(Controller.View);
+        }
+
+        //add calls to handle moving through the background tiles
+        internal void bgMoveCallBack(Globals.moveDirection where) {
+            //keep first, sets currentcenterrect
+            background.moveBackground(where);
+            asteroids.moveAsteroids(where);
         }
     }
 }

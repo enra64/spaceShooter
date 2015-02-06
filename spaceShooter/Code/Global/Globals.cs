@@ -21,6 +21,14 @@ namespace spaceShooter.Code {
             sub
         }
 
+        public enum moveDirection {
+            none,
+            left,
+            down,
+            right,
+            up
+        };
+
         public static List<Texture> startMenuTextures = new List<Texture>();
         public static List<Texture> shipTextures = new List<Texture>();
         public static List<Texture> bulletTextures = new List<Texture>();
