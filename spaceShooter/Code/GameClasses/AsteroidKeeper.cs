@@ -51,19 +51,37 @@ namespace spaceShooter.Code.GameClasses {
         }
 
         internal void moveAsteroids(Globals.moveDirection where) {
-            //for every outer list, move all asteroids to new random positions, but
-            //keep the positions of the mid asteroids
-            for (int mainCounter = 0; mainCounter < 9; mainCounter++) {
-                FloatRect bgFloat = reference.background.bgRects[mainCounter];
-                List<Asteroid> innerReference = outerList[mainCounter];
-
-                for (int i = 0; i < innerReference.Count; i++) {
-                    Vector2f nextPosition = new Vector2f(r.Next((int)bgFloat.Width) + bgFloat.Left, r.Next((int)bgFloat.Height) + bgFloat.Top);
-                    innerReference[i].Sprite.Position = nextPosition;
-                }
+            //move the asteroids furthest away from the ship to the left 
+            switch (where) {
+                case (Globals.moveDirection.right):
+                    moveTile(0, reference.background.bgRects[2]);
+                    moveTile(3, reference.background.bgRects[5]);
+                    moveTile(6, reference.background.bgRects[8]);
+                    break;
+                case (Globals.moveDirection.up):
+                    moveTile(6, reference.background.bgRects[0]);
+                    moveTile(7, reference.background.bgRects[1]);
+                    moveTile(8, reference.background.bgRects[2]);
+                    break;
+                case (Globals.moveDirection.left):
+                    moveTile(2, reference.background.bgRects[0]);
+                    moveTile(5, reference.background.bgRects[3]);
+                    moveTile(8, reference.background.bgRects[6]);
+                    break;
+                case (Globals.moveDirection.down):
+                    moveTile(0, reference.background.bgRects[6]);
+                    moveTile(1, reference.background.bgRects[7]);
+                    moveTile(2, reference.background.bgRects[8]);
+                    break;
             }
-            //because i dont want to interrupt the asteroid look, we move only a specific set of tiles on each move-command.
-            
+        }
+
+        private void moveTile(int tileID, FloatRect targetPosition){
+            List<Asteroid> innerReference = outerList[tileID];
+            for (int i = 0; i < innerReference.Count; i++) {
+                Vector2f nextPosition = new Vector2f(r.Next((int)targetPosition.Width) + targetPosition.Left, r.Next((int)targetPosition.Height) + targetPosition.Top);
+                innerReference[i].Sprite.Position = nextPosition;
+            }
         }
 
         private void collisionHandling(List<Asteroid> centerReference) {
@@ -110,11 +128,10 @@ namespace spaceShooter.Code.GameClasses {
         }
 
         public void draw(){
-            /*
             foreach (List<Asteroid> l in outerList)
                 foreach (Asteroid a in l)
                     a.draw();
-            */
+            
         }
     }
 }
